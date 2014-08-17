@@ -6,7 +6,7 @@
 BaseResource::BaseResource( ) 
 : m_pRenderTargetView( nullptr ), m_pDepthStencilView( nullptr ), m_pDepthStencilBuffer( nullptr ),
   m_pVertexLayout( nullptr ),
-  m_pVertexBuffer( nullptr ), m_pIndexBuffer( nullptr )
+  m_pVertexBuffer( nullptr ), m_pIndexBuffer( nullptr ), m_pConstantBuffer( nullptr )
 {
 }
 
@@ -77,6 +77,7 @@ void BaseResource::CleanupResource()
 	Safe_Release( m_pVertexLayout );
 	Safe_Release( m_pVertexBuffer );
 	Safe_Release( m_pIndexBuffer );	
+	Safe_Release( m_pConstantBuffer );
 }
 
 bool BaseResource::CreateInputLayout( ID3D11Device* pDevice, const D3D11_INPUT_ELEMENT_DESC* pLayout, UINT numElements, ID3DBlob* pVSBlob )
@@ -92,18 +93,18 @@ bool BaseResource::CreateInputLayout( ID3D11Device* pDevice, const D3D11_INPUT_E
 
 bool BaseResource::CreateVertexBuffer( ID3D11Device* pDevice, int totalVertexSize, void* pVertices )
 {
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory( &bd, sizeof( bd ) );
-	bd.Usage = D3D11_USAGE_IMMUTABLE;
-	bd.ByteWidth = totalVertexSize;
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bd.CPUAccessFlags = 0;
+	D3D11_BUFFER_DESC vbd;
+	ZeroMemory( &vbd, sizeof( vbd ) );
+	vbd.Usage = D3D11_USAGE_IMMUTABLE;
+	vbd.ByteWidth = totalVertexSize;
+	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vbd.CPUAccessFlags = 0;
 
 	D3D11_SUBRESOURCE_DATA InitData;
 	ZeroMemory( &InitData, sizeof( InitData ) );
 	InitData.pSysMem = pVertices;
 
-	HRESULT hr = pDevice->CreateBuffer( &bd, &InitData, &m_pVertexBuffer );
+	HRESULT hr = pDevice->CreateBuffer( &vbd, &InitData, &m_pVertexBuffer );
 	
 	return SUCCEEDED( hr );	
 }
@@ -121,6 +122,21 @@ bool BaseResource::CreateIndexBuffer( ID3D11Device* pDevice, int totalIndexSize,
 	D3D11_SUBRESOURCE_DATA InitData;
 	InitData.pSysMem = pIndices;
 	HRESULT hr = pDevice->CreateBuffer( &ibd, &InitData, &m_pIndexBuffer );
+	
+	return SUCCEEDED( hr );
+}
+
+bool BaseResource::CreateConstantBuffer( ID3D11Device* pDevice, int constantSize )
+{
+	D3D11_BUFFER_DESC cbd;
+	cbd.Usage = D3D11_USAGE_DEFAULT;
+	cbd.ByteWidth = constantSize;
+	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbd.CPUAccessFlags = 0;
+	cbd.MiscFlags = 0;
+	cbd.StructureByteStride = 0;
+
+	HRESULT hr = pDevice->CreateBuffer( &cbd, NULL, &m_pConstantBuffer );
 	
 	return SUCCEEDED( hr );
 }

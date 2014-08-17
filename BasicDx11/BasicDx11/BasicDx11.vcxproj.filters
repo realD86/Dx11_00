@@ -60,6 +60,9 @@
     <ClInclude Include="BaseResource.h">
       <Filter>DxResource</Filter>
     </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>App</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -82,6 +85,9 @@
     </ClCompile>
     <ClCompile Include="BaseResource.cpp">
       <Filter>DxResource</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>App</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

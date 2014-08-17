@@ -66,7 +66,7 @@ HRESULT DeviceDx11::InitDevice( HWND hWnd )
 			break;
 	}
 
-	return hr;	
+	return SUCCEEDED( hr );
 }
 
 void DeviceDx11::CleanupDevice()

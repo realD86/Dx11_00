@@ -10,6 +10,7 @@ public:
 	inline ID3D11DepthStencilView*	GetDepthStencilView()	const	{ return m_pDepthStencilView;	}
 	inline ID3D11Buffer*			GetVertexBuffer()		const	{ return m_pVertexBuffer;		}
 	inline ID3D11Buffer*			GetIndexBuffer()		const	{ return m_pIndexBuffer;		}
+	inline ID3D11Buffer*			GetConstantBuffer()		const	{ return m_pConstantBuffer;		}
 	inline ID3D11InputLayout*		GetInputLayout()		const	{ return m_pVertexLayout;		}
 	inline D3D11_VIEWPORT&			GetViewport()					{ return m_ScreenViewport;		}
 
@@ -20,6 +21,7 @@ public:
 
 	bool CreateVertexBuffer( ID3D11Device* pDevice, int totalVertexSize, void* pVertices );
 	bool CreateIndexBuffer( ID3D11Device* pDevice, int totalIndexSize, void* pIndices );
+	bool CreateConstantBuffer( ID3D11Device* pDevice, int constantSize );
 	void CleanupResource();
 
 private:	
@@ -31,5 +33,6 @@ private:
 	ID3D11InputLayout*		m_pVertexLayout;
 	ID3D11Buffer*			m_pVertexBuffer;
 	ID3D11Buffer*			m_pIndexBuffer;
+	ID3D11Buffer*           m_pConstantBuffer;
 };
 
